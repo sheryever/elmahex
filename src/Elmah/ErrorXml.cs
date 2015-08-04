@@ -29,6 +29,7 @@ namespace Elmah
 
     using System;
     using System.Collections.Specialized;
+	
     using System.IO;
     using System.Web;
     using System.Xml;
@@ -172,6 +173,8 @@ namespace Elmah
                     case "queryString"     : collection = error.QueryString; break;
                     case "form"            : collection = error.Form; break;
                     case "cookies"         : collection = error.Cookies; break;
+					case "exceptionData": collection = error.ExceptionData; break;
+
                     default                : reader.Skip(); continue;
                 }
 
@@ -275,7 +278,65 @@ namespace Elmah
             WriteCollection(writer, "queryString", error.QueryString);
             WriteCollection(writer, "form", error.Form);
             WriteCollection(writer, "cookies", error.Cookies);
+            WriteCollection(writer, "exceptionData", GetExceptionData(error));
         }
+
+        /* My code */
+
+        private static NameValueCollection GetExceptionData(Error error)
+        {
+            NameValueCollection exceptionData = new NameValueCollection();
+            
+#region only when reading saved error
+			if (error.ExceptionData.Count > 1)
+				return error.ExceptionData;
+#endregion
+            if (error.Exception == null || error.Exception.Data.Count < 1)
+                return exceptionData;
+
+            FillExceptionNameValueCollection(error.Exception, "", ref exceptionData);
+
+            if (error.Exception.InnerException != null)
+            {
+                FillExceptionNameValueCollection(error.Exception.InnerException, "Ex-L-2 : ", ref exceptionData);
+
+                if (error.Exception.InnerException.InnerException != null)
+                    FillExceptionNameValueCollection(error.Exception.InnerException.InnerException, "Ex-L-3 : ", ref exceptionData);
+            }
+
+            return exceptionData;
+        }
+
+        private static void FillExceptionNameValueCollection(Exception exception, string prefix, ref NameValueCollection collection)
+        {
+
+            if (exception.Data.Count < 1)
+                return;
+
+            foreach (object key in exception.Data.Keys)
+            {
+                collection.Add(string.Format("{0}-{1}", prefix, key), GetObjectValue(exception.Data[key]));
+            }
+        }
+
+        private static string GetObjectValue( object obj)
+        {
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            try
+            {
+                sb.AppendFormat("[{0}] \n{1}", obj.GetType().FullName, Newtonsoft.Json.JsonConvert.SerializeObject(obj));
+				//sb.Append(obj.ToString() + "   [" + obj.GetType().FullName + "]");    
+            }
+            catch (Exception)
+            {
+                sb.Append(obj.ToString());
+            }
+            
+            return sb.ToString();
+        }
+
+
+        /* end my code */
 
         private static void WriteCollection(XmlWriter writer, string name, NameValueCollection collection)
         {

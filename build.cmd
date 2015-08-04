@@ -33,7 +33,7 @@ call :compile v1.1.4322 net-1.1 /d:NET_1_1 /r:System.Data.OracleClient.dll
 goto :EOF
 
 :net-2-0
-call :compile v2.0.50727 net-2.0 /d:NET_2_0 /r:lib\System.Data.SQLite.dll /r:lib\Npgsql.dll /r:lib\mysql.data.dll /r:lib\System.Data.SqlServerCe.dll /nowarn:618
+call :compile v2.0.50727 net-2.0 /d:NET_2_0  /r:lib\Newtonsoft.Json.dll /r:lib\System.Data.SQLite.dll /r:lib\Npgsql.dll /r:lib\mysql.data.dll /r:lib\System.Data.SqlServerCe.dll /nowarn:618
 call :deps 2.0
 goto :EOF
 

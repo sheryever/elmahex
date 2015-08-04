@@ -62,6 +62,7 @@ namespace Elmah
         private NameValueCollection _queryString;
         private NameValueCollection _form;
         private NameValueCollection _cookies;
+		private NameValueCollection _exceptionData;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Error"/> class.
@@ -339,7 +340,16 @@ namespace Elmah
         {
             get { return FaultIn(ref _cookies); }
         }
+		
+        /// <summary>
+        /// Gets a collection representing the exception data (Exception.Data) only for .net, current and two InnerExcepation data
+        /// captured as part of diagnostic data for the error.
+        /// </summary>
 
+        public NameValueCollection ExceptionData 
+        {
+            get { return FaultIn(ref _exceptionData); }
+        }
         /// <summary>
         /// Returns the value of the <see cref="Message"/> property.
         /// </summary>

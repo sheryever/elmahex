@@ -109,6 +109,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\System.Data.SQLite.DLL</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>	
     <Reference Include="Npgsql">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Npgsql.dll</HintPath>

@@ -243,12 +243,21 @@ namespace Elmah
 
             writer.RenderEndTag(); // </ul>
 
+			//
+            // If this error has exception data, then write it out.
+            // Exception.Data are required in many cases, so
+            // we are writing 3 levels, current and two InnerExceptions
+            //
+
+            RenderCollection(writer, error.ExceptionData, 
+                "Exception.Data", "Exception Data");			
+				
             //
             // If this error has context, then write it out.
             // ServerVariables are good enough for most purposes, so
             // we only write those out at this time.
             //
-
+				
             RenderCollection(writer, error.ServerVariables, 
                 "ServerVariables", "Server Variables");
 
