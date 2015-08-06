@@ -1,3 +1,6 @@
+#define NET_3_5
+#undef NET_1_0 
+#undef NET_1_1
 #region License, Terms and Author(s)
 //
 // ELMAH - Error Logging Modules and Handlers for ASP.NET
@@ -22,6 +25,8 @@
 #endregion
 
 [assembly: Elmah.Scc("$Id: Build.cs 3a71f9a4eeb5 2012-04-09 20:23:40Z azizatif $")]
+
+
 
 namespace Elmah
 {
