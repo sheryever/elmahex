@@ -53,7 +53,7 @@ namespace Elmah
     {
         private readonly string _connectionString;
 
-        private const int _maxAppNameLength = 60;
+        private const int _maxAppNameLength = 120;
 
 #if ASYNC_ADONET
         private delegate RV Function<RV, A>(A a);
@@ -148,6 +148,9 @@ namespace Elmah
 
             string errorXml = ErrorXml.EncodeString(error);
             Guid id = Guid.NewGuid();
+
+            if ((error.Exception != null) && error.Exception.Data["applicationName"] != null)
+                this.ApplicationName = error.Exception.Data["applicationName"].ToString();
 
             using (SqlConnection connection = new SqlConnection(this.ConnectionString))
             using (SqlCommand command = Commands.LogError(
