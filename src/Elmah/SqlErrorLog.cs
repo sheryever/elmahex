@@ -149,12 +149,14 @@ namespace Elmah
             string errorXml = ErrorXml.EncodeString(error);
             Guid id = Guid.NewGuid();
 
+            var applicationName = this.ApplicationName;
+
             if ((error.Exception != null) && error.Exception.Data["applicationName"] != null)
-                this.ApplicationName = error.Exception.Data["applicationName"].ToString();
+                applicationName = error.Exception.Data["applicationName"].ToString();
 
             using (SqlConnection connection = new SqlConnection(this.ConnectionString))
             using (SqlCommand command = Commands.LogError(
-                id, this.ApplicationName, 
+                id, applicationName, 
                 error.HostName, error.Type, error.Source, error.Message, error.User,
                 error.StatusCode, error.Time.ToUniversalTime(), errorXml))
             {
