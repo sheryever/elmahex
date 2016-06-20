@@ -8,12 +8,12 @@ https://code.google.com/p/elmah/wiki/Downloads
 Newtonsoft.Json.dll (.net 3.5)
 
 # New features
-Multiple applications error log support added
-Show the Exception.Data in error detail page
+- Multiple applications error log support added
+- Show the Exception.Data in error detail page
 
 
 # Syntax
-Elmah.ErrorSignal.Raise(exception);
-Elmah.ErrorSignal.Raise(exception, applicationName);
-Elmah.ErrorSignal.Raise(httpContext);
-Elmah.ErrorSignal.Raise(Exception, httpContext, applicationName);
+- Elmah.ErrorSignal.Raise(exception);
+- Elmah.ErrorSignal.Raise(exception, applicationName);
+- Elmah.ErrorSignal.Raise(httpContext);
+- Elmah.ErrorSignal.Raise(Exception, httpContext, applicationName);
