@@ -140,6 +140,7 @@ namespace Elmah
 
         protected virtual void LogException(Exception e, HttpContext context)
         {
+            //TODO: Add different application name support
             if (e == null)
                 throw new ArgumentNullException("e");
 

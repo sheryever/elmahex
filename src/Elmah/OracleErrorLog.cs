@@ -220,7 +220,7 @@ namespace Elmah
 
                     parameters.Clear();
                     parameters.Add("v_ErrorId", OracleType.NVarChar, 32).Value = id.ToString("N");
-                    parameters.Add("v_Application", OracleType.NVarChar, _maxAppNameLength).Value = ApplicationName;
+                    parameters.Add("v_Application", OracleType.NVarChar, _maxAppNameLength).Value = string.IsNullOrEmpty(error.ApplicationName) ? this.ApplicationName : error.ApplicationName;;
                     parameters.Add("v_Host", OracleType.NVarChar, 30).Value = error.HostName;
                     parameters.Add("v_Type", OracleType.NVarChar, 100).Value = error.Type;
                     parameters.Add("v_Source", OracleType.NVarChar, 60).Value = error.Source;

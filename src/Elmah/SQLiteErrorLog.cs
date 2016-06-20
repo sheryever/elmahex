@@ -195,7 +195,7 @@ namespace Elmah
             {
                 SQLiteParameterCollection parameters = command.Parameters;
 
-                parameters.Add("@Application", DbType.String, 60).Value = ApplicationName;
+                parameters.Add("@Application", DbType.String, 60).Value = string.IsNullOrEmpty(error.ApplicationName) ? this.ApplicationName : error.ApplicationName;;
                 parameters.Add("@Host", DbType.String, 30).Value = error.HostName;
                 parameters.Add("@Type", DbType.String, 100).Value = error.Type;
                 parameters.Add("@Source", DbType.String, 60).Value = error.Source;

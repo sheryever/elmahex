@@ -142,7 +142,8 @@ namespace Elmah
 
             using (MySqlConnection connection = new MySqlConnection(ConnectionString))
             using (MySqlCommand command = Commands.LogError(
-                id, ApplicationName,
+                id,
+                string.IsNullOrEmpty(error.ApplicationName) ? this.ApplicationName : error.ApplicationName,
                 error.HostName, error.Type, error.Source, error.Message, error.User,
                 error.StatusCode, error.Time.ToUniversalTime(), errorXml))
             {

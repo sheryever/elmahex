@@ -316,7 +316,7 @@ namespace Elmah
         protected virtual void OnError(object sender, EventArgs e)
         {
             HttpContext context = ((HttpApplication) sender).Context;
-            OnError(context.Server.GetLastError(), context);
+            OnError(context.Server.GetLastError(), context, null);
         }
 
         /// <summary>
@@ -325,14 +325,14 @@ namespace Elmah
 
         protected virtual void OnErrorSignaled(object sender, ErrorSignalEventArgs args)
         {
-            OnError(args.Exception, args.Context);
+            OnError(args.Exception, args.Context, args.ApplicationName);
         }
 
         /// <summary>
         /// Reports the exception.
         /// </summary>
 
-        protected virtual void OnError(Exception e, HttpContext context)
+        protected virtual void OnError(Exception e, HttpContext context, string applciationName)
         {
             if (e == null) 
                 throw new ArgumentNullException("e");
@@ -354,6 +354,9 @@ namespace Elmah
             //
 
             Error error = new Error(e, context);
+
+            if (!string.IsNullOrEmpty(applciationName))
+                error.ApplicationName = applciationName;
 
             if (_reportAsynchronously)
                 ReportErrorAsync(error);
@@ -486,8 +489,8 @@ namespace Elmah
             // Format the mail subject.
             // 
 
-            string subjectFormat = Mask.EmptyString(this.MailSubjectFormat, "Error ({1}): {0}");
-            mail.Subject = string.Format(subjectFormat, error.Message, error.Type).
+            string subjectFormat = Mask.EmptyString(this.MailSubjectFormat, "Error ({1}): {0} in {2}");
+            mail.Subject = string.Format(subjectFormat, error.Message, error.Type, error.ApplicationName).
                 Replace('\r', ' ').Replace('\n', ' ');
 
             //

@@ -214,7 +214,7 @@ namespace Elmah
                     SqlCeParameterCollection parameters = command.Parameters;
 
                     parameters.Add("@ErrorId", SqlDbType.UniqueIdentifier).Value = id;
-                    parameters.Add("@Application", SqlDbType.NVarChar, 60).Value = ApplicationName;
+                    parameters.Add("@Application", SqlDbType.NVarChar, 60).Value = string.IsNullOrEmpty(error.ApplicationName) ? this.ApplicationName : error.ApplicationName;;
                     parameters.Add("@Host", SqlDbType.NVarChar, 30).Value = error.HostName;
                     parameters.Add("@Type", SqlDbType.NVarChar, 100).Value = error.Type;
                     parameters.Add("@Source", SqlDbType.NVarChar, 60).Value = error.Source;

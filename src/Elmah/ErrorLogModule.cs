@@ -75,7 +75,7 @@ namespace Elmah
         protected virtual void OnError(object sender, EventArgs args)
         {
             HttpApplication application = (HttpApplication) sender;
-            LogException(application.Server.GetLastError(), application.Context);
+            LogException(application.Server.GetLastError(), application.Context, null);
         }
 
         /// <summary>
@@ -84,14 +84,14 @@ namespace Elmah
 
         protected virtual void OnErrorSignaled(object sender, ErrorSignalEventArgs args)
         {
-            LogException(args.Exception, args.Context);
+            LogException(args.Exception, args.Context, args.ApplicationName);
         }
 
         /// <summary>
         /// Logs an exception and its context to the error log.
         /// </summary>
 
-        protected virtual void LogException(Exception e, HttpContext context)
+        protected virtual void LogException(Exception e, HttpContext context, string applicationNewName)
         {
             if (e == null)
                 throw new ArgumentNullException("e");
@@ -117,7 +117,7 @@ namespace Elmah
             {
                 Error error = new Error(e, context);
                 ErrorLog log = GetErrorLog(context);
-                error.ApplicationName = log.ApplicationName;
+                error.ApplicationName = string.IsNullOrEmpty(applicationNewName) ? log.ApplicationName : applicationNewName;
                 string id = log.Log(error);
                 entry = new ErrorLogEntry(log, id, error);
             }

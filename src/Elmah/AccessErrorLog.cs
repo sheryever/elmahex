@@ -164,7 +164,7 @@ namespace Elmah
 
                 OleDbParameterCollection parameters = command.Parameters;
 
-                parameters.Add("@Application", OleDbType.VarChar, _maxAppNameLength).Value = ApplicationName;
+                parameters.Add("@Application", OleDbType.VarChar, _maxAppNameLength).Value = string.IsNullOrEmpty(error.ApplicationName) ? ApplicationName : error.ApplicationName; ;
                 parameters.Add("@Host", OleDbType.VarChar, 30).Value = error.HostName;
                 parameters.Add("@Type", OleDbType.VarChar, 100).Value = error.Type;
                 parameters.Add("@Source", OleDbType.VarChar, 60).Value = error.Source;

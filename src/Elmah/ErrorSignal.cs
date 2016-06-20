@@ -42,10 +42,19 @@ namespace Elmah
 
         public void Raise(Exception e)
         {
-            Raise(e, null);
+            Raise(e, null, null);
+        }
+        public void Raise(Exception e, string applicationName)
+        {
+            Raise(e, null, applicationName);
         }
 
         public void Raise(Exception e, HttpContext context)
+        {
+            Raise(e, context, null);
+        }
+
+        public void Raise(Exception e, HttpContext context, string applicationName)
         {
             if (context == null)
                 context = HttpContext.Current;
@@ -53,9 +62,10 @@ namespace Elmah
             ErrorSignalEventHandler handler = Raised;
 
             if (handler != null)
-                handler(this, new ErrorSignalEventArgs(e, context));
+                handler(this, new ErrorSignalEventArgs(e, context
+                    , (string.IsNullOrEmpty(applicationName) ? null: applicationName)));
         }
-
+        
         public static ErrorSignal FromCurrentContext()
         {
             return FromContext(HttpContext.Current);
@@ -128,6 +138,11 @@ namespace Elmah
         [ NonSerialized ]
         private readonly HttpContext _context;
 
+        /// <summary>
+        /// Creates the ErrorSignalEventArgs object 
+        /// </summary>
+        /// <param name="e">Exception to log</param>
+        /// <param name="context">Current request context</param>
         public ErrorSignalEventArgs(Exception e, HttpContext context)
         {
             if (e == null)
@@ -136,6 +151,19 @@ namespace Elmah
             _exception = e;
             _context = context;
         }
+
+        /// <summary>
+        /// Creates the ErrorSignalEventArgs object 
+        /// </summary>
+        /// <param name="e">Exception to log</param>
+        /// <param name="context">Current request context</param>
+        /// <param name="applicationName">Separate application name than Elma configuration settings</param>
+        public ErrorSignalEventArgs(Exception e, HttpContext context, string applicationName)
+            :this(e, context)
+        {
+            ApplicationName = applicationName;
+        }
+
 
         public Exception Exception
         {
@@ -146,6 +174,8 @@ namespace Elmah
         {
             get { return _context; }
         }
+
+        public string ApplicationName { get; set; }
 
         public override string ToString()
         {

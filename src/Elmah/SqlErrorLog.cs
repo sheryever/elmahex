@@ -149,7 +149,7 @@ namespace Elmah
             string errorXml = ErrorXml.EncodeString(error);
             Guid id = Guid.NewGuid();
 
-            var applicationName = this.ApplicationName;
+            var applicationName = string.IsNullOrEmpty(error.ApplicationName) ? this.ApplicationName : error.ApplicationName;
 
             if ((error.Exception != null) && error.Exception.Data["applicationName"] != null)
                 applicationName = error.Exception.Data["applicationName"].ToString();
@@ -166,7 +166,7 @@ namespace Elmah
                 return id.ToString();
             }
         }
-
+        
         /// <summary>
         /// Returns a page of errors from the databse in descending order 
         /// of logged time.

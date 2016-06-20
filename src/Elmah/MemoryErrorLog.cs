@@ -152,7 +152,7 @@ namespace Elmah
             //
 
             error = (Error) ((ICloneable) error).Clone();
-            error.ApplicationName = this.ApplicationName;
+            error.ApplicationName = string.IsNullOrEmpty(error.ApplicationName) ? this.ApplicationName : error.ApplicationName;
             Guid newId = Guid.NewGuid();
             ErrorLogEntry entry = new ErrorLogEntry(this, newId.ToString(), error);
 
