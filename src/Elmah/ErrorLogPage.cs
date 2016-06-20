@@ -348,6 +348,7 @@ namespace Elmah
             TableRow headRow = new TableRow();
 
             headRow.Cells.Add(FormatCell(new TableHeaderCell(), "Host", "host-col"));
+            headRow.Cells.Add(FormatCell(new TableHeaderCell(), "Application", "app-col"));
             headRow.Cells.Add(FormatCell(new TableHeaderCell(), "Code", "code-col"));
             headRow.Cells.Add(FormatCell(new TableHeaderCell(), "Type", "type-col"));
             headRow.Cells.Add(FormatCell(new TableHeaderCell(), "Error", "error-col"));
@@ -374,6 +375,7 @@ namespace Elmah
                 //
 
                 bodyRow.Cells.Add(FormatCell(new TableCell(), error.HostName, "host-col"));
+                bodyRow.Cells.Add(FormatCell(new TableCell(), error.ApplicationName, "host-col"));
                 bodyRow.Cells.Add(FormatCell(new TableCell(), error.StatusCode.ToString(), "code-col", Mask.NullString(HttpWorkerRequest.GetStatusDescription(error.StatusCode))));
                 bodyRow.Cells.Add(FormatCell(new TableCell(), ErrorDisplay.HumaneExceptionErrorType(error), "type-col", error.Type));
                     
